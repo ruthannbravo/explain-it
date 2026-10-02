@@ -290,7 +290,10 @@ export const register: Register = on => {
     const i = Math.min(await read($, viewing), all.length - 1)
     const shown = all[i]
     // A thin line between sections, as wide as the pane allows.
-    const rule = '─'.repeat(Math.max(10, Math.min(40, (e.viewport?.columns ?? 40) - 6)))
+    // The terminal draws ─ one letter wide; the desktop's font draws it wider,
+    // so the same line needs fewer of them there to stay on one row.
+    const width = (e.viewport?.columns ?? 40) - 6
+    const rule = '─'.repeat(Math.max(10, Math.min(e.surface === 'terminal' ? 40 : 22, width)))
 
     if (s.kind !== 'idle' || !shown) {
       return (

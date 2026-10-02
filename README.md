@@ -10,7 +10,9 @@ After Claude changes files or runs commands, a small **Explain it** button appea
 - **Why it matters** and **Do I need to do anything?**
 - **Words to learn**: 2-4 real technical terms from the work. It remembers the words you've already learned and teaches new ones each time.
 
-![Explain It panel](docs/screenshot.png)
+![Explain It in the Claude desktop app](docs/desktop.png)
+
+<p align="center"><img src="docs/terminal.png" alt="Explain It in the terminal" width="420"><br><sub>…and in the terminal</sub></p>
 
 ## Commands
 
