@@ -1,0 +1,6 @@
+{
+  "name": "explain-it",
+  "owner": { "name": "Ruth-Ann Bravo" },
+  "description": "Explain It: a Claude Code mod that explains what Claude just did, step by step, in plain English and in technical terms.",
+  "plugins": [{ "name": "explain-it", "source": "./" }]
+}

@@ -1,0 +1,1 @@
+{ "name": "explain-it", "version": "0.1.0", "description": "Explains what Claude just did, step by step, in plain English", "author": { "name": "Ruth-Ann Bravo" }, "types": "./types/index.d.ts" }
