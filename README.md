@@ -11,9 +11,7 @@ After Claude changes files or runs commands, a small **Explain it** button appea
 
 It's kept under about 150 words, so it reads the same in the terminal and the desktop app.
 
-![Explain It in the Claude desktop app](docs/desktop.png)
-
-<p align="center"><img src="docs/terminal.png" alt="Explain It in the terminal" width="420"><br><sub>…and in the terminal</sub></p>
+![Explain It in the Claude desktop app and in the terminal](docs/desktop.png)
 
 ## Commands
 
