@@ -31,16 +31,14 @@ const JOURNAL_KEY = 'journal'
 
 const DOING_TOOLS = /^(Bash|Edit|Write|NotebookEdit|MultiEdit)$/
 
-const FORMAT = `Use exactly these headings:
+const FORMAT = `Use exactly these headings, and nothing else:
 
-SUMMARY — one sentence on what changed.
-STEPS — a bullet-point list (start each line with •), one short sentence per step. No emojis.
-THE TECHNICAL VERSION — the same steps again, in the same order, now said the way an engineer would say them, using the real technical terms. Bullet points (start each line with •), each as: technical sentence → in plain words: short plain version. No emojis.
-WHY IT MATTERS — one or two sentences.
-DO I NEED TO DO ANYTHING? — a clear yes/no, and what to do if yes.
-WORDS TO LEARN — 2-4 real technical terms from this work that I'd hear engineers use. One per line, as: term — what it means in everyday words — how it was used here. Pick the most useful ones to know, not the most obscure.
+SUMMARY — one short sentence on what changed.
+STEPS — 3 to 5 bullet points (start each line with •), one short plain-English sentence each. Where a step has a technical word engineers would use, put it in backticks right after the plain words, e.g. • Saved your work online (\`push\`). At most one technical word per step.
+DO I NEED TO DO ANYTHING? — one line: yes or no, and what to do if yes.
+WORDS TO LEARN — the technical words you put in backticks in STEPS (2 or 3 of them), one per line, as: term — what it means in everyday words. No extra sentences.
 
-Use no emojis anywhere in your answer. Keep it under 400 words. Only describe what actually happened.`
+Use no emojis. Keep it under 150 words. Merge small steps; skip anything trivial. Only describe what actually happened.`
 
 const NOW_PROMPT = `I'm a designer, not an engineer. Explain what you just did in your most recent work in this conversation, step by step, in plain English. No jargon: if a technical word is unavoidable, explain it in brackets with an everyday comparison. ${FORMAT}`
 
@@ -72,13 +70,35 @@ function sections(text: string) {
   return out.length ? out : [{ title: 'What happened', body: text }]
 }
 
+// Draws a section's text with `technical words` highlighted, so a step and
+// its word in WORDS TO LEARN look the same.
+function withTerms(Text: any, body: string, key: string) {
+  const parts = body.split('`')
+  return (
+    <Text key={key}>
+      {parts.map((p, n) => (n % 2 ? <Text key={`t${n}`} bold color="blue">{p}</Text> : p))}
+    </Text>
+  )
+}
+
+// "push — saving online" becomes "• `push` — saving online".
+function asTermList(body: string) {
+  return body
+    .split('\n')
+    .map(l => {
+      const [term, ...rest] = l.replace(/^[-•\d.\s]+/, '').replace(/`/g, '').split(/\s[—–-]\s/)
+      return rest.length ? `• \`${term.trim()}\` — ${rest.join(' — ')}` : l
+    })
+    .join('\n')
+}
+
 // Pulls the terms out of the WORDS TO LEARN section.
 function newTerms(text: string) {
   const words = sections(text).find(s => /WORDS/i.test(s.title))
   if (!words) return []
   return words.body
     .split('\n')
-    .map(l => l.replace(/^[-•\d.\s]+/, '').split(/\s[—–-]\s/)[0].trim())
+    .map(l => l.replace(/^[-•\d.\s]+/, '').replace(/`/g, '').split(/\s[—–-]\s/)[0].trim())
     .filter(t => t.length > 0 && t.length < 40)
 }
 
@@ -323,7 +343,9 @@ export const register: Register = on => {
             <Box key={`s${n}`} flexDirection="column">
               {n > 0 && <Text dimColor>{rule}</Text>}
               <Text bold color={look.color}>{look.emoji} {title}</Text>
-              <Box marginBottom={1}><Text>{body}</Text></Box>
+              <Box marginBottom={1}>
+                {withTerms(Text, /WORDS/i.test(title) ? asTermList(body) : body, `b${n}`)}
+              </Box>
             </Box>
           )
         })}

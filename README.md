@@ -5,10 +5,11 @@ A [Claude Code](https://claude.com/claude-code) mod for people who build with Cl
 After Claude changes files or runs commands, a small **Explain it** button appears above the prompt. Press it and a side panel walks you through what just happened:
 
 - **Summary**: one sentence on what changed
-- **Steps**: what was done, in plain English
-- **The technical version**: the same steps the way an engineer would say them, each paired with its plain-English meaning
-- **Why it matters** and **Do I need to do anything?**
-- **Words to learn**: 2-4 real technical terms from the work. It remembers the words you've already learned and teaches new ones each time.
+- **Steps**: 3-5 short plain-English steps, each with its technical word highlighted, like "Saved your work online (**push**)"
+- **Do I need to do anything?**: one line
+- **Words to learn**: the highlighted words, each with an everyday meaning. It remembers the words you've already learned and teaches new ones each time.
+
+It's kept under about 150 words, so it reads the same in the terminal and the desktop app.
 
 ![Explain It in the Claude desktop app](docs/desktop.png)
 
